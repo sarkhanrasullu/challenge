@@ -14,10 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -25,10 +22,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "group_role")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "GroupRole.findAll", query = "SELECT g FROM GroupRole g")
-    , @NamedQuery(name = "GroupRole.findById", query = "SELECT g FROM GroupRole g WHERE g.id = :id")})
 public class GroupRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,7 +32,7 @@ public class GroupRole implements Serializable {
     private Integer id;
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Group1 groupId;
+    private UserGroup groupId;
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Role roleId;
@@ -59,11 +52,11 @@ public class GroupRole implements Serializable {
         this.id = id;
     }
 
-    public Group1 getGroupId() {
+    public UserGroup getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Group1 groupId) {
+    public void setGroupId(UserGroup groupId) {
         this.groupId = groupId;
     }
 

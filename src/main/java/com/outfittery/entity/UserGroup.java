@@ -14,13 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
@@ -28,13 +24,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author sarkhanrasullu
  */
 @Entity
-@Table(name = "group")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Group1.findAll", query = "SELECT g FROM Group1 g")
-    , @NamedQuery(name = "Group1.findById", query = "SELECT g FROM Group1 g WHERE g.id = :id")
-    , @NamedQuery(name = "Group1.findByName", query = "SELECT g FROM Group1 g WHERE g.name = :name")})
-public class Group1 implements Serializable {
+@Table(name = "user_group")
+public class UserGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,10 +41,10 @@ public class Group1 implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId")
     private List<User> userList;
 
-    public Group1() {
+    public UserGroup() {
     }
 
-    public Group1(Integer id) {
+    public UserGroup(Integer id) {
         this.id = id;
     }
 
@@ -73,7 +64,6 @@ public class Group1 implements Serializable {
         this.name = name;
     }
 
-    @XmlTransient
     @JsonIgnore
     public List<GroupRole> getGroupRoleList() {
         return groupRoleList;
@@ -83,7 +73,6 @@ public class Group1 implements Serializable {
         this.groupRoleList = groupRoleList;
     }
 
-    @XmlTransient
     @JsonIgnore
     public List<User> getUserList() {
         return userList;
@@ -103,10 +92,10 @@ public class Group1 implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Group1)) {
+        if (!(object instanceof UserGroup)) {
             return false;
         }
-        Group1 other = (Group1) object;
+        UserGroup other = (UserGroup) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

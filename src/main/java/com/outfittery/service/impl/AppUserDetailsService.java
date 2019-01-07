@@ -1,6 +1,6 @@
 package com.outfittery.service.impl;
 
-import com.outfittery.entity.Group1;
+import com.outfittery.entity.UserGroup;
 import com.outfittery.entity.GroupRole;
 import com.outfittery.repository.UserRepository;
 import com.outfittery.entity.User;
@@ -32,7 +32,7 @@ public class AppUserDetailsService implements UserDetailsService {
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
-        Group1 group = user.getGroupId();
+        UserGroup group = user.getGroupId();
         List<GroupRole> groupRoles = group.getGroupRoleList();
         groupRoles.forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getRoleId().getName()));

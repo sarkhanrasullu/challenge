@@ -14,13 +14,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -30,12 +27,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 @Entity
 @Table(name = "user_status")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UserStatus.findAll", query = "SELECT u FROM UserStatus u")
-    , @NamedQuery(name = "UserStatus.findById", query = "SELECT u FROM UserStatus u WHERE u.id = :id")
-    , @NamedQuery(name = "UserStatus.findByName", query = "SELECT u FROM UserStatus u WHERE u.name = :name")
-    , @NamedQuery(name = "UserStatus.findByComment", query = "SELECT u FROM UserStatus u WHERE u.comment = :comment")})
 public class UserStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
