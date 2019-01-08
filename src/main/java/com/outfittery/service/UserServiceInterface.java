@@ -9,6 +9,8 @@ public interface UserServiceInterface {
 
     public List<User> getAll();
 
+    public List<User> getAllByGroupId(int groupId);
+
     int add(User u);
 
     boolean update(User u);

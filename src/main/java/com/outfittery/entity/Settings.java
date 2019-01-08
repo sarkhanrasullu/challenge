@@ -5,17 +5,17 @@
  */
 package com.outfittery.entity;
 
+import com.outfittery.util.TimeUtil;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -26,42 +26,39 @@ import javax.persistence.TemporalType;
 public class Settings implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "appointment_slot_length")
-    @Temporal(TemporalType.TIME)
-    private Date appointmentSlotLength;
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "name")
+    private String name;
     @Column(name = "appointment_slot_count")
     private Integer appointmentSlotCount;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 8)
+    @Column(name = "appointment_slot_length")
+    private String appointmentSlotLength;
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 8)
     @Column(name = "appointment_slot_start_time")
-    @Temporal(TemporalType.TIME)
-    private Date appointmentSlotStartTime;
-    @Column(name = "appointment_max_days")
-    private Integer appointmentMaxDays;
+    private String appointmentSlotStartTime;
 
     public Settings() {
     }
 
-    public Settings(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public Settings(String name) {
+        this.name = name;
     }
 
     public Date getAppointmentSlotLength() {
-        return appointmentSlotLength;
+        return TimeUtil.parse(appointmentSlotLength, "HH:mm:dd");
     }
 
-    public void setAppointmentSlotLength(Date appointmentSlotLength) {
+    public void setAppointmentSlotLength(String appointmentSlotLength) {
         this.appointmentSlotLength = appointmentSlotLength;
     }
 
@@ -74,25 +71,25 @@ public class Settings implements Serializable {
     }
 
     public Date getAppointmentSlotStartTime() {
-        return appointmentSlotStartTime;
+        return TimeUtil.parse(appointmentSlotStartTime, "HH:mm:dd");
     }
 
-    public void setAppointmentSlotStartTime(Date appointmentSlotStartTime) {
+    public void setAppointmentSlotStartTime(String appointmentSlotStartTime) {
         this.appointmentSlotStartTime = appointmentSlotStartTime;
     }
 
-    public Integer getAppointmentMaxDays() {
-        return appointmentMaxDays;
+    public String getName() {
+        return name;
     }
 
-    public void setAppointmentMaxDays(Integer appointmentMaxDays) {
-        this.appointmentMaxDays = appointmentMaxDays;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (name != null ? name.hashCode() : 0);
         return hash;
     }
 
@@ -103,7 +100,7 @@ public class Settings implements Serializable {
             return false;
         }
         Settings other = (Settings) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.name == null && other.name != null) || (this.name != null && !this.name.equals(other.name))) {
             return false;
         }
         return true;
@@ -111,7 +108,7 @@ public class Settings implements Serializable {
 
     @Override
     public String toString() {
-        return "com.outfittery.entity.Settings[ id=" + id + " ]";
+        return "com.outfittery.entity.Settings[ name=" + name + " ]";
     }
-    
+
 }

@@ -58,6 +58,17 @@ public class Appointment implements Serializable {
         this.appointmentDt = appointmentDt;
     }
 
+    public Appointment(Date appointmentDt, User stylistId) {
+        this.appointmentDt = appointmentDt;
+        this.stylistId = stylistId;
+    }
+
+    public Appointment(Date appointmentDt, User stylistId, User customerId) {
+        this.appointmentDt = appointmentDt;
+        this.stylistId = stylistId;
+        this.customerId = customerId;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -114,5 +125,5 @@ public class Appointment implements Serializable {
     public String toString() {
         return "com.outfittery.entity.Appointment[ id=" + id + " ]";
     }
-    
+
 }

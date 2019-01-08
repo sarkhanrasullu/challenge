@@ -23,8 +23,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -61,14 +59,13 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "register_dt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date registerDt;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "stylistId")
-    private List<Appointment> appointmentList;
+    private List<Appointment> appointmentListAsStylist;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
-    private List<Appointment> appointmentList1;
+    private List<Appointment> appointmentListAsCustomer;
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private UserGroup groupId;
@@ -144,25 +141,23 @@ public class User implements Serializable {
         return "blocked".equalsIgnoreCase(getStatusId().getName());
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public List<Appointment> getAppointmentList() {
-        return appointmentList;
+    public List<Appointment> getAppointmentListAsStylist() {
+        return appointmentListAsStylist;
     }
 
-    public void setAppointmentList(List<Appointment> appointmentList) {
-        this.appointmentList = appointmentList;
+    public void setAppointmentListAsStylist(List<Appointment> appointmentListAsStylist) {
+        this.appointmentListAsStylist = appointmentListAsStylist;
     }
 
-    @XmlTransient
-    @JsonIgnore
-    public List<Appointment> getAppointmentList1() {
-        return appointmentList1;
+    public List<Appointment> getAppointmentListAsCustomer() {
+        return appointmentListAsCustomer;
     }
 
-    public void setAppointmentList1(List<Appointment> appointmentList1) {
-        this.appointmentList1 = appointmentList1;
+    public void setAppointmentListAsCustomer(List<Appointment> appointmentListAsCustomer) {
+        this.appointmentListAsCustomer = appointmentListAsCustomer;
     }
+
+    
 
     public UserGroup getGroupId() {
         return groupId;

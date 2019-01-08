@@ -49,6 +49,11 @@ public class UserServiceImpl implements UserServiceInterface {
         return id;
 
     }
+
+    @Override
+    public List<User> getAllByGroupId(int groupId) {
+        return userDao.findByGroupId(groupId);
+    }
  
 
 }

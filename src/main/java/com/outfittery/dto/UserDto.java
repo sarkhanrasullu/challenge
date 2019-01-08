@@ -1,8 +1,11 @@
 package com.outfittery.dto;
 
+import com.outfittery.entity.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class UserDto {
 
-    private int id;
+    private Integer id;
     private String name;
     private String surname;
     private String username;
@@ -16,20 +19,30 @@ public class UserDto {
         this.id = id;
     }
 
-    public UserDto(int id, String name, String surname, String username, String password, boolean blocked) {
+    public UserDto(User user) {
+        if (user == null) {
+            return;
+        }
+        this.id = user.getId();
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.username = user.getUsername();
+        this.blocked = user.isBlocked();
+    }
+
+    public UserDto(int id, String name, String surname, String username, boolean blocked) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.username = username;
-        this.password = password;
         this.blocked = blocked;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -57,14 +70,6 @@ public class UserDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public boolean isBlocked() {
         return blocked;
     }
@@ -73,5 +78,14 @@ public class UserDto {
         this.blocked = blocked;
     }
 
-    
+    public String getPassword() {
+        return password;
+    }
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    public void setPassword(String password) {
+        this.password = encoder.encode(password);
+    }
+
 }
