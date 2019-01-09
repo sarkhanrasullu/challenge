@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    // return "blocked".equalsIgnoreCase(getStatusId().getName());
     public User findByUsername(String username);
 
     public List<User> findByGroupId(UserGroup groupId);
