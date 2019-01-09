@@ -4,7 +4,6 @@ import com.outfittery.entity.UserGroup;
 import com.outfittery.entity.GroupRole;
 import com.outfittery.repository.UserRepository;
 import com.outfittery.entity.User;
-import com.outfittery.util.LoggedInUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,10 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import static org.apache.tomcat.jni.User.username;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 
 @Service
 @Transactional
@@ -40,14 +38,14 @@ public class AppUserDetailsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role.getRoleId().getName()));
         });
 
-         LoggedInUser lgU = new LoggedInUser(
-                 user, 
-                 user.getUsername(), 
-                 user.getPassword(), 
-                 !user.isBlocked(), 
-                 authorities
-         );
+        UserBuilder builder = org.springframework.security.core.userdetails.User.builder();
+        builder
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .disabled(user.isBlocked());
+        UserDetails userDetails = builder.build();
       
-        return lgU;
+        return userDetails;
     }
 }

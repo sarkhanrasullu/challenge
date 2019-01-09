@@ -45,10 +45,6 @@ public class TimeUtil {
         return DateUtils.truncate(date, java.util.Calendar.DAY_OF_MONTH);
     }
 
-    public static void main(String[] args) {
-        System.out.println(toDayWithoutTime());
-    }
-
     public static Date parse(String stringDate, String pattern) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(pattern);

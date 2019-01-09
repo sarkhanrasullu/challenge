@@ -1,18 +1,18 @@
 package com.outfittery.dto;
 
-public class ResponseDTO {
+public final class ResponseDto {
 
     private String msg;
     private int errCode;
     private Object obj;
 
-    public ResponseDTO(String msg, int errCode, Object obj) {
+    private ResponseDto(String msg, int errCode, Object obj) {
         this.msg = msg;
         this.errCode = errCode;
         this.obj = obj;
     }
 
-    public ResponseDTO(Object obj) {
+    private ResponseDto(Object obj) {
         this.obj = obj;
     }
 
@@ -39,6 +39,13 @@ public class ResponseDTO {
     public void setObj(Object obj) {
         this.obj = obj;
     }
-    
-    
+
+    public static ResponseDto instance(Object obj) {
+        return new ResponseDto(obj);
+    }
+
+    public static ResponseDto instanceSuccess(Object obj) {
+        return new ResponseDto("SUCCESS", 0, obj);
+    }
+
 }

@@ -28,8 +28,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .requestMatchers()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/actuator/**", "/api-docs/**").permitAll()
+                .antMatchers("/actuator/**", "/api-docs/**","/h2-console/**").permitAll()
                 .antMatchers("/users").hasAnyAuthority("SELECT_USER")
                 .antMatchers("/**" ).authenticated();
+                
+                http.headers().frameOptions().disable();//to enable h2dbconsole
+
     }
 }

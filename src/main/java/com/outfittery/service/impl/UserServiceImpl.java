@@ -2,6 +2,7 @@ package com.outfittery.service.impl;
 
 import com.outfittery.repository.UserRepository;
 import com.outfittery.entity.User;
+import com.outfittery.entity.UserGroup;
 import com.outfittery.service.UserServiceInterface;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserServiceInterface {
 
     @Override
     public List<User> getAllByGroupId(int groupId) {
-        return userDao.findByGroupId(groupId);
+        return userDao.findByGroupId(new UserGroup(groupId));
     }
  
 

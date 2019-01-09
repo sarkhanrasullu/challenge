@@ -1,49 +1,36 @@
-package com.outfittery.dto;
+package com.outfittery.form;
 
+import com.outfittery.dto.*;
 import com.outfittery.entity.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class UserDto {
+public class UserForm {
 
-    private Integer id;
     private String name;
     private String surname;
     private String username;
-    private boolean blocked;
+    private String password;
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public UserDto() {
+    public UserForm() {
     }
+ 
 
-    public UserDto(int id) {
-        this.id = id;
-    }
-
-    public UserDto(User user) {
+    public UserForm(User user) {
         if (user == null) {
             return;
         }
-        this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
         this.username = user.getUsername();
-        this.blocked = user.isBlocked();
     }
 
-    public UserDto(int id, String name, String surname, String username, boolean blocked) {
-        this.id = id;
+    public UserForm(String name, String surname, String username, boolean blocked) {
         this.name = name;
         this.surname = surname;
         this.username = username;
-        this.blocked = blocked;
     }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+ 
 
     public String getName() {
         return name;
@@ -69,13 +56,17 @@ public class UserDto {
         this.username = username;
     }
 
-    public boolean isBlocked() {
-        return blocked;
+    public String getPassword() {
+        return password;
     }
 
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+    public void setPassword(String password) {
+        this.password = encoder.encode(password);
     }
- 
+
+    public User user() {
+        User user = new User(null, this.getName(), this.getSurname(), this.getUsername(), this.getPassword(), null);
+        return user;
+    }
 
 }

@@ -5,6 +5,8 @@
  */
 package com.outfittery.dto;
 
+import com.outfittery.form.*;
+import com.outfittery.entity.Appointment;
 import java.util.Date;
 
 /**
@@ -14,33 +16,33 @@ import java.util.Date;
 public class AppointmentDto {
 
     private int id;
-    private int stylistId;
-    private int customerId;
+    private UserDto stylistId;
+    private UserDto customerId;
     private Date date;
 
     public AppointmentDto() {
 
     }
 
-    public AppointmentDto(int stylistId, int customerId, Date date) {
-        this.stylistId = stylistId;
-        this.customerId = customerId;
-        this.date = date;
+    public AppointmentDto(Appointment appointment) {
+        this.stylistId = new UserDto(appointment.getStylistId());
+        this.customerId = new UserDto(appointment.getCustomerId());
+        this.date = appointment.getAppointmentDt();
     }
 
-    public int getStylistId() {
+    public UserDto getStylistId() {
         return stylistId;
     }
 
-    public void setStylistId(int stylistId) {
+    public void setStylistId(UserDto stylistId) {
         this.stylistId = stylistId;
     }
 
-    public int getCustomerId() {
+    public UserDto getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(UserDto customerId) {
         this.customerId = customerId;
     }
 

@@ -1,18 +1,20 @@
 package com.outfittery.dto;
 
+import com.outfittery.dto.UserDto;
 import com.outfittery.entity.User;
+import com.outfittery.dto.UserDto;
 import java.util.Date;
 import java.util.List;
 
-public class AvailableSlotsWrapperDTO {
+public class AvailableSlotsWrapperDto {
 
     private UserDto stylist;
     private List<Date> availableDates;
 
-    public AvailableSlotsWrapperDTO() {
+    public AvailableSlotsWrapperDto() {
     }
 
-    public AvailableSlotsWrapperDTO(User u, List<Date> availableDates) {
+    public AvailableSlotsWrapperDto(User u, List<Date> availableDates) {
         this.stylist = new UserDto(u);
         this.availableDates = availableDates;
     }

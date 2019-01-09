@@ -6,11 +6,14 @@
 package com.outfittery.controller;
 
 import com.outfittery.dto.AppointmentDto;
-import com.outfittery.dto.AvailableSlotsWrapperDTO;
-import com.outfittery.dto.ResponseDTO;
+import com.outfittery.form.AppointmentForm;
+import com.outfittery.dto.ResponseDto;
 import com.outfittery.entity.Appointment;
 import com.outfittery.entity.User;
 import com.outfittery.service.AppointmentServiceInterface;
+import com.outfittery.service.UserServiceInterface;
+import com.outfittery.util.DTOHelper;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,31 +27,59 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppointmentRestController {
 
     @Autowired
-    AppointmentServiceInterface service;
+    AppointmentServiceInterface appointmentService;
 
-    @RequestMapping("/appointment/all")
-    public ResponseEntity getAvailableAppointmentSlotsByStylist(
-            @RequestParam("stylistId") int stylistId,
+    @Autowired
+    UserServiceInterface userService;
+
+    @RequestMapping("/appointment/slot")
+    public ResponseEntity getAvailableAppointmentSlots(
+            @RequestParam("stylistId") Integer stylistId,
             @RequestParam("nextDays") int nextDays) {
-        AvailableSlotsWrapperDTO res = service.getAvailableSlots(stylistId, nextDays);
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(res));
+        Object res = null;
+        if (stylistId != null) {
+            User stylist = userService.findUserById(stylistId);
+            if (stylist == null) {
+                throw new IllegalArgumentException("No such stylist");
+            }
+            res = appointmentService.getAvailableSlotsByStylistId(stylist, nextDays);
+        } else {
+            res = appointmentService.getAvailableSlots(nextDays);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.instance(res));
     }
 
-    @PostMapping("/appointment/add")
-    public ResponseEntity add(@RequestBody AppointmentDto appointmentDto) {
+    @RequestMapping("/appointment")
+    public ResponseEntity getAllAppointment() {
+        List<Appointment> list = appointmentService.getAllAppointment();
+        List<AppointmentDto> res = DTOHelper.convertAppointmentToDto(list);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.instance(res));
+    }
+
+    @PostMapping("/appointment")
+    public ResponseEntity add(@RequestBody AppointmentForm appointmentForm) {
         Appointment appointment = new Appointment();
-        appointment.setAppointmentDt(appointmentDto.getDate());
-        appointment.setStylistId(new User(appointmentDto.getStylistId()));
+        appointment.setAppointmentDt(appointmentForm.getDate());
+        User stylist = userService.findUserById(appointmentForm.getStylistId());
+        if (stylist == null) {
+            throw new IllegalArgumentException("No such stylist");
+        }
+        appointment.setStylistId(stylist);
 
         //here we need to check if logged in user customer then customer id only can be logged in user
         //if logged in user admin or moderator then customer id can be any customer. 
         //Assume moderator wants to make an appointment for somebody with any stylist on phone call
         //OR WE COULD SPLIT THE URLS TO 2 PARTS: CLIENT API AND ADMIN API.
-        appointment.setCustomerId(new User(appointmentDto.getCustomerId()));
+        User customer = userService.findUserById(appointmentForm.getCustomerId());
+        if (customer == null) {
+            throw new IllegalArgumentException("No such customer");
+        }
+        appointment.setCustomerId(customer);
 
-        int id = service.addAppointment(appointment);
-        appointmentDto.setId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(appointmentDto));
+        appointmentService.addAppointment(appointment, appointmentForm.getInNextDays());
+
+        AppointmentDto result = new AppointmentDto(appointment);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.instanceSuccess(result));
     }
 
 }
